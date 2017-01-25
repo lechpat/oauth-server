@@ -6,9 +6,42 @@ use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Security;
 use Cake\Utility\Text;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 
-class Client extends Entity
+class Client extends Entity implements ClientEntityInterface
 {
+    /**
+     * Get the client's identifier.
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->_properties['id'];
+    }
+
+    /**
+     * Get the client's name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        $this->_properties['name'];
+    }
+
+    /**
+     * Returns the registered redirect URI (as a string).
+     *
+     * Alternatively return an indexed array of redirect URIs.
+     *
+     * @return string|string[]
+     */
+    public function getRedirectUri()
+    {
+        $this->_properties['redirect_uri'];
+    }
+
     /**
      * Create a new, pretty (as in moderately, not beautiful - that can't be guaranteed ;-) random client secret
      *

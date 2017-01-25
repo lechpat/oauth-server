@@ -1,10 +1,10 @@
 <?php
-namespace OAuthServer\Model\Storage;
+namespace OAuthServer\Model\Repository;
 
 use Cake\Datasource\ModelAwareTrait;
-use League\OAuth2\Server\Storage\AbstractStorage as BaseAbstractStorage;
+use League\OAuth2\Server\Repositories\RepositoryInterface;
 
-abstract class AbstractStorage extends BaseAbstractStorage
+abstract class AbstractRepository implements RepositoryInterface
 {
     use ModelAwareTrait;
 

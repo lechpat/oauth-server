@@ -12,12 +12,12 @@ use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use League\OAuth2\Server\Exception\OAuthException;
-use OAuthServer\Model\Storage;
-use OAuthServer\Traits\GetStorageTrait;
+use OAuthServer\Model\Repository;
+use OAuthServer\Traits\GetRepositoryTrait;
 
 class OAuthAuthenticate extends BaseAuthenticate
 {
-    use GetStorageTrait;
+    use GetRepositoryTrait;
 
     /**
      * @var \League\OAuth2\Server\ResourceServer
@@ -36,22 +36,29 @@ class OAuthAuthenticate extends BaseAuthenticate
      */
     protected $_defaultConfig = [
         'continue' => false,
-        'storages' => [
-            'session' => [
-                'className' => 'OAuthServer.Session'
-            ],
+        'repositories' => [
             'accessToken' => [
                 'className' => 'OAuthServer.AccessToken'
             ],
             'client' => [
                 'className' => 'OAuthServer.Client'
             ],
+            'refreshToken' => [
+                'className' => 'OAuthServer.RefreshToken'
+            ],
             'scope' => [
                 'className' => 'OAuthServer.Scope'
+            ],
+            'authCode' => [
+                'className' => 'OAuthServer.AuthCode'
+            ],
+            'user' => [
+                'className' => 'OAuthServer.User'
             ]
         ],
         'resourceServer' => [
-            'className' => 'League\OAuth2\Server\ResourceServer'
+            'className' => 'League\OAuth2\Server\ResourceServer',
+            'publicKey' => ROOT.DS.'oauthKeys/public.key'
         ]
     ];
 
@@ -77,10 +84,8 @@ class OAuthAuthenticate extends BaseAuthenticate
         }
 
         $server = new $serverClassName(
-            $this->_getStorage('session'),
-            $this->_getStorage('accessToken'),
-            $this->_getStorage('client'),
-            $this->_getStorage('scope')
+            $this->_getRepository('accessToken'),        
+            $serverConfig['publicKey']
         );
 
         $this->Server = $server;
@@ -145,6 +150,8 @@ class OAuthAuthenticate extends BaseAuthenticate
      */
     public function getUser(Request $request)
     {
+        \Cake\Log\Log::write('error',$request);
+
         try {
             $this->Server->isValidRequest(true, $request->query('access_token'));
         } catch (OAuthException $e) {

@@ -22,8 +22,8 @@ class OAuthController extends AppController
      */
     public function initialize()
     {
-        $this->loadComponent('OAuthServer.OAuth', (array)Configure::read('OAuth'));
-        $this->loadComponent('RequestHandler');
+//        $this->loadComponent('OAuthServer.OAuth', (array)Configure::read('OAuth'));
+//        $this->loadComponent('RequestHandler');
         parent::initialize();
     }
 
@@ -34,7 +34,7 @@ class OAuthController extends AppController
     public function beforeFilter(Event $event)
     {
         if ($this->Auth) {
-            $this->Auth->allow(['oauth', 'authorize', 'accessToken']);
+            $this->Auth->allow(['defaultResponse','oauth', 'authorize', 'accessToken']);
         }
 
         parent::beforeFilter($event);
@@ -151,7 +151,9 @@ class OAuthController extends AppController
     public function accessToken()
     {
         try {
-            $response = $this->OAuth->Server->issueAccessToken();
+//            $response = $this->OAuth->Server->issueAccessToken();
+//            $response = $this->OAuth->Server->respondToAccessTokenRequest($this->request,\Cake\Http\ResponseTransformer::toPsr($this->response));
+            $response = JSON_DECODE($this->response,1);
             $this->set($response);
             $this->set('_serialize', array_keys($response));
         } catch (OAuthException $e) {
@@ -165,5 +167,29 @@ class OAuthController extends AppController
             ]);
             $this->set('_serialize', ['error', 'message']);
         }
+
+    }
+
+    /**     
+     * @return void
+     */             
+    public function defaultResponse()
+    {               
+        try {       
+            $response = JSON_DECODE($this->response,1);
+            $this->set($response);
+            $this->set('_serialize', array_keys($response));
+        } catch (OAuthException $e) {
+            $this->response->statusCode($e->httpStatusCode);
+            $headers = $e->getHttpHeaders();
+            array_shift($headers);
+            $this->response->header($headers);
+            $this->set([
+                'error' => $e->errorType,
+                'message' => $e->getMessage()
+            ]);
+            $this->set('_serialize', ['error', 'message']);
+        }
+
     }
 }

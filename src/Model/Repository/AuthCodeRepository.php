@@ -1,16 +1,57 @@
 <?php
 
-namespace OAuthServer\Model\Storage;
+namespace OAuthServer\Model\Repository;
 
 use Cake\Log\Log;
 use Cake\ORM\Entity;
-use League\OAuth2\Server\Entity\AuthCodeEntity;
-use League\OAuth2\Server\Entity\ScopeEntity;
-use League\OAuth2\Server\Storage\AuthCodeInterface;
+use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
+use League\OAuth2\Server\Entities\ScopeEntityInterface;
+use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 
-class AuthCodeStorage extends AbstractStorage implements AuthCodeInterface
+class AuthCodeRepository extends AbstractRepository implements AuthCodeRepositoryInterface
 {
+    /**
+     * Creates a new AuthCode
+     *
+     * @return AuthCodeEntityInterface
+     */
+    public function getNewAuthCode()
+    {
 
+    }
+
+    /**
+     * Persists a new auth code to permanent storage.
+     *
+     * @param AuthCodeEntityInterface $authCodeEntity
+     */
+    public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
+    {
+
+    }
+
+    /**
+     * Revoke an auth code.
+     *
+     * @param string $codeId
+     */
+    public function revokeAuthCode($codeId)
+    {
+
+    }
+
+    /**
+     * Check if the auth code has been revoked.
+     *
+     * @param string $codeId
+     *
+     * @return bool Return true if this code has been revoked
+     */
+    public function isAuthCodeRevoked($codeId)
+    {
+
+    }
+    
     /**
      * {@inheritdoc}
      *

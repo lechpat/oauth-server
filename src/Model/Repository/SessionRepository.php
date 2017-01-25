@@ -1,15 +1,15 @@
 <?php
 
-namespace OAuthServer\Model\Storage;
+namespace OAuthServer\Model\Repository;
 
 use Cake\ORM\Entity;
 use League\OAuth2\Server\Entity\AccessTokenEntity;
 use League\OAuth2\Server\Entity\AuthCodeEntity;
 use League\OAuth2\Server\Entity\ScopeEntity;
 use League\OAuth2\Server\Entity\SessionEntity;
-use League\OAuth2\Server\Storage\SessionInterface;
+use League\OAuth2\Server\Repositories\SessionRepositoryInterface;
 
-class SessionStorage extends AbstractStorage implements SessionInterface
+class SessionRepository extends AbstractRepository implements SessionRepositoryInterface
 {
     /**
      * {@inheritdoc}

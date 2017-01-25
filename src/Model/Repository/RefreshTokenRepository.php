@@ -1,12 +1,55 @@
 <?php
 
-namespace OAuthServer\Model\Storage;
+namespace OAuthServer\Model\Repository;
 
-use League\OAuth2\Server\Entity\RefreshTokenEntity;
-use League\OAuth2\Server\Storage\RefreshTokenInterface;
+use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
+use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
-class RefreshTokenStorage extends AbstractStorage implements RefreshTokenInterface
+class RefreshTokenRepository extends AbstractRepository implements RefreshTokenRepositoryInterface
 {
+    /**
+     * Creates a new refresh token
+     *
+     * @return RefreshTokenEntityInterface
+     */
+    public function getNewRefreshToken()
+    {
+        $this->loadModel('OAuthServer.RefreshTokens');
+        return $this->RefreshTokens->newEntity();
+    }
+
+    /**
+     * Create a new refresh token_name.
+     *
+     * @param RefreshTokenEntityInterface $refreshTokenEntity
+     */
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    {
+        $this->loadModel('OAuthServer.RefreshTokens');
+        $this->RefreshTokens->save($refreshTokenEntity);
+    }
+
+    /**
+     * Revoke the refresh token.
+     *
+     * @param string $tokenId
+     */
+    public function revokeRefreshToken($tokenId)
+    {
+
+    }
+
+    /**
+     * Check if the refresh token has been revoked.
+     *
+     * @param string $tokenId
+     *
+     * @return bool Return true if this token has been revoked
+     */
+    public function isRefreshTokenRevoked($tokenId)
+    {
+
+    }
     /**
      * {@inheritdoc}
      *
